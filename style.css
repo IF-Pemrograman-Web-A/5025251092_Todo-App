@@ -124,6 +124,48 @@ footer {
     color: gray;
 }
 
+.todo-item button {
+    padding: 5px 10px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.todo-item input {
+    margin-left: 10px;
+}
+
+.theme-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dark-mode {
+    background-color: #222;
+    color: white;
+}
+
+.dark-mode .todo-panel,
+.dark-mode .detail-panel {
+    background-color: #333;
+}
+
+.dark-mode .todo-item {
+    border-color: gray;
+}
+
+.dark-mode .todo-item p,
+.dark-mode .panel-header span {
+    color: lightgray;
+}
+
 @media (max-width: 768px) {
     main {
         grid-template-columns: 1fr;
