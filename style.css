@@ -175,3 +175,19 @@ footer {
         flex-direction: column;
     }
 }
+
+.dark-mode {
+    background-color: #222;
+    color: white;
+}
+
+.dark-mode .todo-panel,
+.dark-mode .detail-panel {
+    background-color: #333;
+}
+
+button:focus,
+input:focus,
+textarea:focus {
+    outline: 2px solid blue;
+}
