@@ -18,35 +18,10 @@
 
             <div class="panel-header">
                 <h2>To Do</h2>
-                <span>3 Tasks</span>
+                <span id="task-count">0 Tasks</span>
             </div>
 
-            <div class="todo-list">
-
-                <div class="todo-item">
-                    <div>
-                        <h3>PWEB</h3>
-                        <p>Tugas Bikin Web</p>
-                    </div>
-                    <span class="status pending">Pending</span>
-                </div>
-
-                <div class="todo-item">
-                    <div>
-                        <h3>Teori Graf</h3>
-                        <p>Cari solusi optimal</p>
-                    </div>
-                    <span class="status pending">Pending</span>
-                </div>
-
-                <div class="todo-item">
-                    <div>
-                        <h3>KKA</h3>
-                        <p>Buat Implementasi A* Informed Search</p>
-                    </div>
-                    <span class="status pending">Pending</span>
-                </div>
-
+            <div class="todo-list" aria-live="polite">
             </div>
 
         </section>
@@ -57,16 +32,54 @@
                 <h3>Create New Todo</h3>
 
                 <label for="title">Title</label>
-                <input type="text" id="title" placeholder="Enter todo title">
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="Enter todo title"
+                    required
+                >
 
                 <label for="description">Description</label>
-                <textarea id="description" placeholder="Enter description"></textarea>
+                <textarea
+                    id="description"
+                    placeholder="Enter description"
+                    required
+                ></textarea>
 
                 <label for="date">Date</label>
                 <input type="date" id="date">
 
-                <button type="submit">Create Todo</button>
+                <label for="notification">Notification Time</label>
+                <input type="datetime-local" id="notification">
+
+                <label for="image">Todo Image</label>
+                <input
+                    type="file"
+                    id="image"
+                    accept="image/*"
+                    capture="environment"
+                >
+
+                <button type="button" id="camera-button">
+                    Open Camera
+                </button>
+
+                <video id="camera" autoplay hidden></video>
+
+                <button type="button" id="capture-button" hidden>
+                    Capture Image
+                </button>
+
+                <canvas id="canvas" hidden></canvas>
+
+                <button type="submit">
+                    Create Todo
+                </button>
             </form>
+
+            <button type="button" id="theme-button">
+                Light / Dark Mode
+            </button>
 
         </aside>
     </main>
@@ -74,6 +87,7 @@
     <footer>
         <p>Dhia Hiroyuki Prawira</p>
     </footer>
+
     <script src="script.js"></script>
 
 </body>
