@@ -6,7 +6,8 @@ NRP   : 5025251092
 
 
 
-<img width="984" height="848" alt="image" src="https://github.com/user-attachments/assets/594cc127-2247-4375-beae-b75526312128" />
+<img width="874" height="859" alt="image" src="https://github.com/user-attachments/assets/780e12d3-63dc-44bf-a044-f7d0bfac5985" />
+
 
 
 To do list 
@@ -21,4 +22,4 @@ Tambah ganti mode
 
 Fitur penambahan to do
 
-
+penambaan service worker
