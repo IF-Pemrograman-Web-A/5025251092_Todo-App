@@ -133,5 +133,5 @@ if (localStorage.getItem("theme") === "dark") {
 
 
 if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
+    navigator.serviceWorker.register("sw.js");
 }
