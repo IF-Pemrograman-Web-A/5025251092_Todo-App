@@ -1,40 +1,55 @@
-let todos = [
-    {
-        title: "PWEB",
-        description: "Tugas Bikin Web",
-        completed: false
-    },
-    {
-        title: "Teori Graf",
-        description: "Cari solusi optimal",
-        completed: false
-    },
-    {
-        title: "KKA",
-        description: "Buat Implementasi A* Informed Search",
-        completed: false
-    }
-];
+let todos = [];
 
 const list = document.querySelector(".todo-list");
 const form = document.querySelector(".new-todo");
+
+
+let db;
+
+let request = indexedDB.open("TodoDB", 1);
+
+request.onupgradeneeded = function(event) {
+    db = event.target.result;
+    db.createObjectStore("todos", {
+        keyPath: "id",
+        autoIncrement: true
+    });
+};
+
+request.onsuccess = function(event) {
+    db = event.target.result;
+    loadTodos();
+};
+
+function loadTodos() {
+    let transaction = db.transaction("todos", "readonly");
+    let store = transaction.objectStore("todos");
+    let request = store.getAll();
+
+    request.onsuccess = function() {
+        todos = request.result;
+        showTodos();
+    };
+}
 
 function showTodos() {
     list.innerHTML = "";
 
     todos.forEach(function(todo, index) {
-        const item = document.createElement("div");
+
+        let item = document.createElement("div");
         item.classList.add("todo-item");
 
         item.innerHTML = `
             <div>
                 <h3>${todo.title}</h3>
                 <p>${todo.description}</p>
+                <p>${todo.date}</p>
             </div>
 
             <input type="checkbox">
 
-            <span class="status ${todo.completed ? "completed" : "pending"}">
+            <span class="status">
                 ${todo.completed ? "Completed" : "Pending"}
             </span>
 
@@ -42,27 +57,28 @@ function showTodos() {
             <button>Delete</button>
         `;
 
-        const checkbox = item.querySelector("input");
+        let checkbox = item.querySelector("input");
 
         checkbox.checked = todo.completed;
 
         checkbox.addEventListener("change", function() {
             todo.completed = checkbox.checked;
+            updateTodo(todo);
             showTodos();
         });
 
-        const buttons = item.querySelectorAll("button");
+        let buttons = item.querySelectorAll("button");
 
         buttons[0].addEventListener("click", function() {
-            const newTitle = prompt("Enter new title:", todo.title);
-
-            if (newTitle !== null && newTitle !== "") {
-                todo.title = newTitle;
-                showTodos();
-            }
+            todo.title = prompt("New title:", todo.title);
+            updateTodo(todo);
+            showTodos();
         });
 
         buttons[1].addEventListener("click", function() {
+            let transaction = db.transaction("todos", "readwrite");
+            transaction.objectStore("todos").delete(todo.id);
+
             todos.splice(index, 1);
             showTodos();
         });
@@ -71,35 +87,51 @@ function showTodos() {
     });
 }
 
+
 form.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const title = document.querySelector("#title").value;
-    const description = document.querySelector("#description").value;
-
-    if (title === "" || description === "") {
-        return;
-    }
-
-    todos.push({
-        title: title,
-        description: description,
+    let todo = {
+        title: document.querySelector("#title").value,
+        description: document.querySelector("#description").value,
+        date: document.querySelector("#date").value,
+        image: document.querySelector("#image").files[0]?.name || "",
+        notification: document.querySelector("#notification").value,
         completed: false
-    });
+    };
+
+    let transaction = db.transaction("todos", "readwrite");
+    transaction.objectStore("todos").add(todo);
 
     form.reset();
 
-    showTodos();
+    setTimeout(loadTodos, 100);
 });
 
-const darkButton = document.createElement("button");
 
-darkButton.textContent = "Light / Dark Mode";
+function updateTodo(todo) {
+    let transaction = db.transaction("todos", "readwrite");
+    transaction.objectStore("todos").put(todo);
+}
 
-darkButton.addEventListener("click", function() {
+
+themeButton = document.querySelector("#theme-button");
+
+themeButton.addEventListener("click", function() {
     document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
+    }
 });
 
-document.querySelector(".detail-panel").appendChild(darkButton);
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+}
 
-showTodos();
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
